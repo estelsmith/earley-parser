@@ -1,0 +1,19 @@
+{
+    "name": "estelsmith/earley-parser",
+    "description": "Earley parsing in PHP!",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Estel Smith",
+            "email": "estel.smith@gmail.com"
+        }
+    ],
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "ESJ\\Earley\\": "src"
+        }
+    }
+}
