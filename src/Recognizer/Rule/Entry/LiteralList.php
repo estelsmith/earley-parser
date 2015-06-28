@@ -7,7 +7,7 @@ class LiteralList implements Entry
     /**
      * @var Literal[]
      */
-    private $literals;
+    private $literals = [];
 
     /**
      * @param Literal[] $literals
