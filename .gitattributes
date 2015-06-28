@@ -1,0 +1,4 @@
+* text=auto
+
+*.php eol=lf
+*.md eol=lf
