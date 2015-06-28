@@ -28,7 +28,7 @@ class Item implements ToString
      * @param int $entryPosition
      * @param int $inputPosition
      */
-    private function __construct(Rule $rule, $entryPosition, $inputPosition)
+    public function __construct(Rule $rule, $entryPosition, $inputPosition)
     {
         $this->rule = $rule;
         $this->entryPosition = $entryPosition;
