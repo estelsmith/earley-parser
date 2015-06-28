@@ -2,10 +2,8 @@
 
 namespace ESJ\Earley\Recognizer\Rule\Entry;
 
-interface Entry
+use ESJ\Earley\ToString;
+
+interface Entry extends ToString
 {
-    /**
-     * @return string
-     */
-    public function __toString();
 }
