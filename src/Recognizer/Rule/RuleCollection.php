@@ -24,6 +24,15 @@ class RuleCollection implements \IteratorAggregate, ToString
         return new \ArrayIterator($this->rules);
     }
 
+    /**
+     * @param callable $callback
+     * @return Rule[]
+     */
+    public function filter(callable $callback)
+    {
+        return array_filter($this->rules, $callback);
+    }
+
     public function __toString()
     {
         $rules = array_map(function (Rule $rule) {
