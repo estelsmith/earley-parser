@@ -43,6 +43,22 @@ class Rule implements ToString
         return $this->entries;
     }
 
+    /**
+     * @param int $index
+     * @return null|Entry
+     */
+    public function getEntryAt($index)
+    {
+        $result = null;
+        $entries = $this->entries;
+
+        if (array_key_exists($index, $entries)) {
+            $result = $entries[$index];
+        }
+
+        return $result;
+    }
+
     public function __toString()
     {
         $entries = array_map(function (Entry $entry) {
