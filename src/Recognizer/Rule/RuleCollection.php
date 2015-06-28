@@ -30,7 +30,7 @@ class RuleCollection implements \IteratorAggregate, ToString
             return $rule->__toString();
         }, $this->rules);
 
-        return implode("\n", $rules);
+        return implode("\n", $rules) . "\n";
     }
 
     /**
