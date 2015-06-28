@@ -11,6 +11,7 @@ use ESJ\Earley\Recognizer\Rule\Rule;
 use ESJ\Earley\Recognizer\Rule\RuleCollection;
 use ESJ\Earley\Recognizer\Set;
 use ESJ\Earley\Recognizer\State;
+use ESJ\Earley\Recognizer\State\Validator;
 
 class Recognizer
 {
@@ -25,11 +26,18 @@ class Recognizer
     private $startRuleName;
 
     /**
+     * @var Validator
+     */
+    private $stateValidator;
+
+    /**
+     * @param Validator $stateValidator
      * @param RuleCollection $rules
      * @param string $startRuleName
      */
-    public function __construct(RuleCollection $rules, $startRuleName)
+    public function __construct(Validator $stateValidator, RuleCollection $rules, $startRuleName)
     {
+        $this->stateValidator = $stateValidator;
         $this->rules = $rules;
         $this->startRuleName = $startRuleName;
     }
@@ -69,6 +77,10 @@ class Recognizer
                     }
                 }
             }
+        }
+
+        if (!$this->stateValidator->isValidState($state, $this->startRuleName)) {
+            throw new \Exception('Could not successfully parse input');
         }
 
         return $state;
