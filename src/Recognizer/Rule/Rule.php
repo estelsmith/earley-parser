@@ -5,7 +5,7 @@ namespace ESJ\Earley\Recognizer\Rule;
 use ESJ\Earley\Recognizer\Rule\Entry\Entry;
 use ESJ\Earley\ToString;
 
-class Rule implements ToString
+class Rule implements \IteratorAggregate, ToString
 {
     /**
      * @var string
@@ -25,6 +25,11 @@ class Rule implements ToString
     {
         $this->name = (string)$name;
         $this->addEntries($entries);
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->entries);
     }
 
     /**
