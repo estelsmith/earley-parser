@@ -67,6 +67,14 @@ class Item implements ToString
         return $this->rule->getEntryAt($this->entryPosition);
     }
 
+    /**
+     * @return bool
+     */
+    public function isComplete()
+    {
+        return $this->entryPosition === count($this->rule->getEntries());
+    }
+
     public function __toString()
     {
         $rule = $this->rule;
