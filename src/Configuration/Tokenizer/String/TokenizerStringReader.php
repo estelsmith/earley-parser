@@ -43,6 +43,14 @@ class TokenizerStringReader
     }
 
     /**
+     * @return static
+     */
+    public static function create()
+    {
+        return new static(new ParseTreeVisitor());
+    }
+
+    /**
      * @param string $input
      * @return Tokenizer
      * @throws \Exception
