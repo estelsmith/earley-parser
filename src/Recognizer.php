@@ -47,7 +47,7 @@ class Recognizer
      * @return State
      * @throws \Exception
      */
-    public function parse($input)
+    public function recognize($input)
     {
         $preparedInput = $this->prepareInput($input);
 
