@@ -2,8 +2,8 @@
 
 namespace ESJ\Earley\Configuration\Tokenizer\String;
 
+use ESJ\Earley\Configuration\Tokenizer\Visitor\ParseTreeVisitor;
 use ESJ\Earley\Parser;
-use ESJ\Earley\Parser\Tree;
 use ESJ\Earley\Recognizer;
 use ESJ\Earley\Recognizer\Rule\Entry\Reference;
 use ESJ\Earley\Recognizer\Rule\Entry\TokenReference;
@@ -26,15 +26,25 @@ class TokenizerStringReader
      */
     private $tokenizer;
 
-    public function __construct()
+    /**
+     * @var ParseTreeVisitor
+     */
+    private $visitor;
+
+    /**
+     * @param ParseTreeVisitor $visitor
+     */
+    public function __construct(ParseTreeVisitor $visitor)
     {
+        $this->visitor = $visitor;
+
         $this->rules = $this->createEarleyRules();
         $this->tokenizer = $this->createTokenizer();
     }
 
     /**
      * @param string $input
-     * @return Tree
+     * @return Tokenizer
      * @throws \Exception
      */
     public function readInput($input)
@@ -46,7 +56,7 @@ class TokenizerStringReader
         $state = $recognizer->recognize($tokens);
         $parseTree = $parser->parse($state, $tokens);
 
-        return $parseTree;
+        return $this->visitor->dispatch($parseTree);
     }
 
     /**
