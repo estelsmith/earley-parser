@@ -3,15 +3,13 @@
 namespace ESJ\Earley;
 
 use ESJ\Earley\Recognizer\Item;
-use ESJ\Earley\Recognizer\Rule\Entry\Eof;
-use ESJ\Earley\Recognizer\Rule\Entry\Literal;
-use ESJ\Earley\Recognizer\Rule\Entry\LiteralList;
 use ESJ\Earley\Recognizer\Rule\Entry\Reference;
+use ESJ\Earley\Recognizer\Rule\Entry\TokenReference;
 use ESJ\Earley\Recognizer\Rule\Rule;
 use ESJ\Earley\Recognizer\Rule\RuleCollection;
 use ESJ\Earley\Recognizer\Set;
 use ESJ\Earley\Recognizer\State;
-use ESJ\Earley\Recognizer\State\Validator;
+use ESJ\Earley\Tokenizer\Token;
 
 class Recognizer
 {
@@ -36,14 +34,12 @@ class Recognizer
     }
 
     /**
-     * @param $input
+     * @param Token[] $input
      * @return State
      * @throws \Exception
      */
     public function recognize($input)
     {
-        $preparedInput = $this->prepareInput($input);
-
         $state = new State($this->startRuleName);
         $state->addSet($this->createInitialSet());
 
@@ -60,9 +56,8 @@ class Recognizer
                         case Reference::class:
                             $this->predict($state, $set, $entry);
                             break;
-                        case LiteralList::class:
-                        case Eof::class:
-                            $this->scan($state, $preparedInput, $item, $entry);
+                        case TokenReference::class:
+                            $this->scan($state, $input, $item, $entry);
                             break;
                         default:
                             throw new \Exception(sprintf('Unknown rule "%s"', $class));
@@ -123,11 +118,11 @@ class Recognizer
 
     /**
      * @param State $state
-     * @param array $input
+     * @param Token[] $input
      * @param Item $item
-     * @param LiteralList $literalList
+     * @param TokenReference $tokenReference
      */
-    private function scan(State $state, array $input, Item $item, LiteralList $literalList)
+    private function scan(State $state, $input, Item $item, TokenReference $tokenReference)
     {
         $inputPosition = $state->getSets()->key();
 
@@ -135,8 +130,9 @@ class Recognizer
             return;
         }
 
-        $literal = new Literal($input[$inputPosition]);
-        if ($literalList->hasLiteral($literal)) {
+        $token = $input[$inputPosition];
+
+        if ($tokenReference->matchesToken($token)) {
             $nextInputPosition = $inputPosition + 1;
 
             if (!array_key_exists($nextInputPosition, $state->getSets())) {
@@ -150,18 +146,6 @@ class Recognizer
                 $item->getInputPosition()
             ));
         }
-    }
-
-    /**
-     * @param string $input
-     * @return array
-     */
-    private function prepareInput($input)
-    {
-        $result = str_split($input);
-        $result[] = chr(0);
-
-        return $result;
     }
 
     /**
