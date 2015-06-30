@@ -25,6 +25,14 @@ class Tree implements Node
     }
 
     /**
+     * @return Rule
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
+
+    /**
      * @param Node $child
      */
     public function addChild(Node $child)
