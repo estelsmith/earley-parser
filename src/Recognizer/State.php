@@ -38,7 +38,10 @@ class State implements ToString
         return $this->sets;
     }
 
-    public function isValid()
+    /**
+     * @return null|Item
+     */
+    public function getFinalItem()
     {
         $startRuleName = $this->startRuleName;
         $sets = $this->sets;
@@ -52,11 +55,19 @@ class State implements ToString
             $valid = $valid && ($item->getRule()->getName() === $startRuleName);
 
             if ($valid) {
-                return true;
+                return $item;
             }
         }
 
-        return false;
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return (bool)$this->getFinalItem();
     }
 
     public function __toString()
