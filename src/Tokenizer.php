@@ -42,6 +42,8 @@ class Tokenizer
             }
         }
 
+        $tokens[] = new Token(new Definition('EOF', '\x00'), chr(0));
+
         return $tokens;
     }
 
