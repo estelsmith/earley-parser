@@ -11,9 +11,15 @@ class State implements ToString
      */
     private $sets;
 
-    public function __construct()
+    private $startRuleName;
+
+    /**
+     * @param string $startRuleName
+     */
+    public function __construct($startRuleName)
     {
         $this->sets = new \ArrayIterator();
+        $this->startRuleName = $startRuleName;
     }
 
     /**
@@ -30,6 +36,27 @@ class State implements ToString
     public function getSets()
     {
         return $this->sets;
+    }
+
+    public function isValid()
+    {
+        $startRuleName = $this->startRuleName;
+        $sets = $this->sets;
+        $endSet = $sets[$sets->count() - 1];
+
+        foreach ($endSet->getItems() as $item) {
+            $valid = true;
+
+            $valid = $valid && ($item->isComplete());
+            $valid = $valid && ($item->getInputPosition() === 0);
+            $valid = $valid && ($item->getRule()->getName() === $startRuleName);
+
+            if ($valid) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __toString()

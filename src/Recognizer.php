@@ -26,18 +26,11 @@ class Recognizer
     private $startRuleName;
 
     /**
-     * @var Validator
-     */
-    private $stateValidator;
-
-    /**
-     * @param Validator $stateValidator
      * @param RuleCollection $rules
      * @param string $startRuleName
      */
-    public function __construct(Validator $stateValidator, RuleCollection $rules, $startRuleName)
+    public function __construct(RuleCollection $rules, $startRuleName)
     {
-        $this->stateValidator = $stateValidator;
         $this->rules = $rules;
         $this->startRuleName = $startRuleName;
     }
@@ -51,7 +44,7 @@ class Recognizer
     {
         $preparedInput = $this->prepareInput($input);
 
-        $state = new State();
+        $state = new State($this->startRuleName);
         $state->addSet($this->createInitialSet());
 
         foreach ($state->getSets() as $setIndex => $set) {
@@ -79,7 +72,7 @@ class Recognizer
             }
         }
 
-        if (!$this->stateValidator->isValidState($state, $this->startRuleName)) {
+        if (!$state->isValid()) {
             throw new \Exception('Could not successfully parse input');
         }
 
