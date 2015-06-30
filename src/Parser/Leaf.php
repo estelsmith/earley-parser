@@ -2,23 +2,25 @@
 
 namespace ESJ\Earley\Parser;
 
+use ESJ\Earley\Tokenizer\Token;
+
 class Leaf implements Node
 {
     /**
-     * @var string
+     * @var Token
      */
     private $value;
 
     /**
-     * @param string $value
+     * @param Token $value
      */
-    public function __construct($value)
+    public function __construct(Token $value)
     {
         $this->value = $value;
     }
 
     /**
-     * @return string
+     * @return Token
      */
     public function getValue()
     {

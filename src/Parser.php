@@ -5,25 +5,25 @@ namespace ESJ\Earley;
 use ESJ\Earley\Parser\Leaf;
 use ESJ\Earley\Parser\Tree;
 use ESJ\Earley\Recognizer\Item;
-use ESJ\Earley\Recognizer\Rule\Entry\LiteralList;
 use ESJ\Earley\Recognizer\Rule\Entry\Reference;
+use ESJ\Earley\Recognizer\Rule\Entry\TokenReference;
 use ESJ\Earley\Recognizer\Rule\Rule;
 use ESJ\Earley\Recognizer\State;
+use ESJ\Earley\Tokenizer\Token;
 
 class Parser
 {
     /**
      * @param State $state
-     * @param string $input
+     * @param Token[] $input
      * @return Tree
      */
     public function parse(State $state, $input)
     {
         $finalItem = $state->getFinalItem();
-        $inputData = str_split($input);
         $completedItems = $this->getCompletedItems($state);
 
-        return $this->buildTree($completedItems, $inputData, $finalItem->getRule());
+        return $this->buildTree($completedItems, $input, $finalItem->getRule());
     }
 
     /**
@@ -48,11 +48,11 @@ class Parser
 
     /**
      * @param Item[] $items
-     * @param string[] $inputData
+     * @param string[] $input
      * @param Rule $rule
      * @return Tree
      */
-    private function buildTree(&$items, &$inputData, Rule $rule)
+    private function buildTree(&$items, &$input, Rule $rule)
     {
         $result = new Tree($rule);
         $children = [];
@@ -65,10 +65,10 @@ class Parser
             switch ($class) {
                 case Reference::class:
                     $item = $this->consumeItemMatchingRule($items, $entry->getRuleName());
-                    $children[] = $this->buildTree($items, $inputData, $item->getRule());
+                    $children[] = $this->buildTree($items, $input, $item->getRule());
                     break;
-                case LiteralList::class:
-                    $children[] = new Leaf(array_pop($inputData));
+                case TokenReference::class:
+                    $children[] = new Leaf(array_pop($input));
                     break;
                 default:
                     echo 'BLERGH!!!!' . "\n";
