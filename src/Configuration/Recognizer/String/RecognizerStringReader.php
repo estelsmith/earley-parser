@@ -72,13 +72,10 @@ class RecognizerStringReader
                 new Reference('rule')
             ]),
             new Rule('rule', [
-                new Reference('ruleidentifier'),
+                new TokenReference('TOKEN_IDENTIFIER'),
                 new TokenReference('TOKEN_SEPARATOR'),
                 new Reference('ruleparts'),
                 new TokenReference('TOKEN_EOL')
-            ]),
-            new Rule('ruleidentifier', [
-                new TokenReference('TOKEN_IDENTIFIER')
             ]),
             new Rule('ruleparts', [
                 new Reference('ruleparts'),
