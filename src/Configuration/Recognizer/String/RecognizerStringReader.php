@@ -51,11 +51,12 @@ class RecognizerStringReader
     }
 
     /**
-     * @param $input
+     * @param string $input
+     * @param string $startRuleName
      * @return Recognizer
      * @throws \Exception
      */
-    public function readInput($input)
+    public function readInput($input, $startRuleName)
     {
         $input .= "\n";
         // Fun story. Earley parsers don't like empty rules, so
@@ -69,7 +70,7 @@ class RecognizerStringReader
         $state = $recognizer->recognize($tokens);
         $parseTree = $parser->parse($state, $tokens);
 
-        return $this->visitor->dispatch($parseTree, static::START_RULE_NAME);
+        return $this->visitor->dispatch($parseTree, $startRuleName);
     }
 
     /**
