@@ -86,7 +86,12 @@ class TokenizerStringReader
             ]),
             new Rule('rule', [
                 new TokenReference('TOKEN_IDENTIFIER'),
-                new TokenReference('TOKEN_SEPARATOR'),
+                new TokenReference('TOKEN_SIGNIFICANT_SEPARATOR'),
+                new TokenReference('TOKEN_PATTERN')
+            ]),
+            new Rule('rule', [
+                new TokenReference('TOKEN_IDENTIFIER'),
+                new TokenReference('TOKEN_INSIGNIFICANT_SEPARATOR'),
                 new TokenReference('TOKEN_PATTERN')
             ])
         ]);
@@ -100,7 +105,8 @@ class TokenizerStringReader
         return new Tokenizer([
             new Definition('TOKEN_SPACE', '\s+', true),
             new Definition('TOKEN_IDENTIFIER', '[a-zA-Z][a-zA-Z0-9_-]+'),
-            new Definition('TOKEN_SEPARATOR', '->'),
+            new Definition('TOKEN_SIGNIFICANT_SEPARATOR', '->'),
+            new Definition('TOKEN_INSIGNIFICANT_SEPARATOR', '_>'),
             new Definition('TOKEN_PATTERN', '\/(.+)\/')
         ]);
     }

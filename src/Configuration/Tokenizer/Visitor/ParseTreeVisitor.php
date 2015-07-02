@@ -69,9 +69,12 @@ class ParseTreeVisitor
     {
         list($identifier, $separator, $pattern) = $tree->getChildren();
 
+        $insignificantSeparator = $this->visit($separator) === '_>' ?: false;
+
         return new Definition(
             $this->visit($identifier),
-            preg_replace('/\/(.+)\//', '$1', $this->visit($pattern))
+            preg_replace('/\/(.+)\//', '$1', $this->visit($pattern)),
+            $insignificantSeparator
         );
     }
 }
