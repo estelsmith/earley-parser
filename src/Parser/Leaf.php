@@ -26,4 +26,17 @@ class Leaf implements Node
     {
         return $this->value;
     }
+
+    public function __toString()
+    {
+        $header = 'leaf';
+        $value = $this->value->getValue();
+
+        if ($value === chr(0)) {
+            $value = '%EOF';
+            $header = 'eof_' . $header;
+        }
+
+        return sprintf('%s -> %s', $header, $value);
+    }
 }

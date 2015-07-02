@@ -2,6 +2,8 @@
 
 namespace ESJ\Earley\Parser;
 
-interface Node
+use ESJ\Earley\ToString;
+
+interface Node extends ToString
 {
 }

@@ -47,4 +47,19 @@ class Tree implements Node
     {
         return $this->children;
     }
+
+    public function __toString()
+    {
+        $children = $this->children;
+        $output = sprintf("%s ->\n", $this->rule->getName());
+
+        foreach ($children as $child) {
+            $childOutput = explode("\n", $child);
+            $childLines = array_map(function ($line) { return sprintf("| %s\n", $line); }, $childOutput);
+
+            $output .= implode('', $childLines);
+        }
+
+        return $output;
+    }
 }
